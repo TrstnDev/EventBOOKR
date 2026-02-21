@@ -424,7 +424,7 @@ fabric.properties
 .DS_Store
 **/.DS_Store
 
-# Ignore Rider / JetBrains specific settings
+# Ignore Rider/JetBrains specific settings
 .idea/
 *.sln.iml
 *.user
