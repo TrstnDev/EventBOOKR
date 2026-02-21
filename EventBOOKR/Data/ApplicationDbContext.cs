@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using EventBOOKR.Models;
 
 namespace EventBOOKR.Data;
 

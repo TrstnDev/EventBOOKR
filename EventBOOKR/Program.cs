@@ -1,3 +1,6 @@
+using EventBOOKR.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace EventBOOKR;
 
 public class Program
@@ -8,6 +11,9 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
+
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
         var app = builder.Build();
 
@@ -30,6 +36,23 @@ public class Program
                 pattern: "{controller=Home}/{action=Index}/{id?}")
             .WithStaticAssets();
 
+        using (var scope = app.Services.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+            try
+            {
+                var context = services.GetRequiredService<ApplicationDbContext>();
+                
+                // This command forces EF Core to build the database and tables if they dont exist
+                context.Database.EnsureCreated();
+            }
+            catch (Exception ex)
+            {
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "An error occurred while creating the database.");
+            }
+        }
+        
         app.Run();
     }
 }
