@@ -31,6 +31,11 @@ public class VenuesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("VenueId,Name,Location,Capacity,ImageUrl")] Venue venue)
     {
+        if (string.IsNullOrWhiteSpace(venue.ImageUrl))
+        {
+            venue.ImageUrl = "https://via.placeholder.com/300x200?text=Event+Image";
+        }
+        
         if (ModelState.IsValid)
         {
             _context.Add(venue);

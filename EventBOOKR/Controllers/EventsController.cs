@@ -28,6 +28,11 @@ public class EventsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("EventId,Name,Description,ImageUrl")] Event @event)
     {
+        if (string.IsNullOrWhiteSpace(@event.ImageUrl))
+        {
+            @event.ImageUrl = "https://via.placeholder.com/300x200?text=Event+Image";
+        }
+        
         if (ModelState.IsValid)
         {
             _context.Add(@event);

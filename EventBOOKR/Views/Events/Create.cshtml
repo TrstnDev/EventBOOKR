@@ -9,9 +9,11 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+            
             <div class="form-group mb-3">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" class="form-control"/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group mb-3">
@@ -21,10 +23,10 @@
             </div>
             <div class="form-group mb-3">
                 <label asp-for="ImageUrl" class="control-label">Image URL (Optional)</label>
-                <input asp-for="ImageUrl" class="form-control" placeholder="Leave blank for default placeholder" />
+                <input asp-for="ImageUrl" class="form-control" placeholder="Leave blank for default placeholder"/>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-success" />
+                <input type="submit" value="Create" class="btn btn-success"/>
                 <a asp-action="Index" class="btn btn-secondary">Back to List</a>
             </div>
         </form>

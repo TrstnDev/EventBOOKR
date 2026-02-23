@@ -15,7 +15,7 @@ public class Venue
     [Required]
     public int Capacity { get; set; }
 
-    public string ImageUrl { get; set; } = "https://via.placeholder.com/300x200?text=Venue+Image";
+    public string? ImageUrl { get; set; } = "https://via.placeholder.com/300x200?text=Venue+Image";
     
-    public ICollection<Booking> Bookings { get; set; }
+    public ICollection<Booking>? Bookings { get; set; }
 }
