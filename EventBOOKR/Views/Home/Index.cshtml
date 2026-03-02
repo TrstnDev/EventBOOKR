@@ -1,8 +1,39 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@{
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center mb-5">
+    <h1 class="display-4">Welcome to EventBOOKR</h1>
+    <p>Your centralised platform for venue and event management.</p>
+</div>
+
+<div class="row text-center">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary mb-3 shadow-sm">
+            <div class="card-header">Total Venues</div>
+            <div class="card-body">
+                <h2 class="card-title display-5">@ViewBag.TotalVenues</h2>
+                <a asp-controller="Venues" asp-action="Index" class="text-white">Manage Venues &rarr;</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success mb-3 shadow-sm">
+            <div class="card-header">Active Events</div>
+            <div class="card-body">
+                <h2 class="card-title display-5">@ViewBag.TotalEvents</h2>
+                <a asp-controller="Events" asp-action="Index" class="text-white">Manage Events &rarr;</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-info mb-3 shadow-sm">
+            <div class="card-header">Total Bookings</div>
+            <div class="card-body">
+                <h2 class="card-title display-5">@ViewBag.TotalBookings</h2>
+                <a asp-controller="Bookings" asp-action="Index" class="text-white">Manage Bookings &rarr;</a>
+            </div>
+        </div>
+    </div>
 </div>
