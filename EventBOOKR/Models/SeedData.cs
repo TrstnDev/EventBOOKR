@@ -38,7 +38,17 @@ public static class SeedData
         {
             new Event { Name = "Global Tech Summit 2026", Description = "Annual technology and software development conference." },
             new Event { Name = "Sunset Botanical Concert", Description = "Live acoustic music in the gardens." },
-            new Event { Name = "Weekend Farmers Market", Description = "Local food, crafts, and live entertainment." }
+            new Event { Name = "Weekend Farmers Market", Description = "Local food, crafts, and live entertainment." },
+            new Event { Name = "Sea Point Artisan Market", Description = "A vibrant community gathering featuring local crafts, food, and family activities." },
+            new Event { Name = "Oceanfront Corporate Gala", Description = "Exclusive black-tie networking evening for maritime and tech executives." },
+            new Event { Name = "Pink Lady Spring High Tea", Description = "A luxurious afternoon of classical music, fine teas, and pastries." },
+            new Event { Name = "Contemporary African Art Auction", Description = "An avant-garde evening celebrating modern art, featuring live auctions and champagne." },
+            new Event { Name = "Mother City Startup Pitch Night", Description = "Cape Town's brightest tech founders pitch their ideas against a city skyline backdrop." },
+            new Event { Name = "V&A Waterfront Fashion Week", Description = "Showcasing the upcoming summer collections from top South African designers." },
+            new Event { Name = "Grand Summer Sundowners", Description = "An exclusive beach club party featuring international deep house DJs." },
+            new Event { Name = "City Bowl Sunset Sessions", Description = "Trendy inner-city networking event with a panoramic view of Table Mountain." },
+            new Event { Name = "Boutique Mixology Masterclass", Description = "An intimate evening learning the art of craft cocktails and curated tapas." },
+            new Event { Name = "Industrial Chic Wedding Expo", Description = "A showcase of premium wedding vendors in a modern-industrial aesthetic." }
         };
         context.Events.AddRange(events);
         context.SaveChanges();
