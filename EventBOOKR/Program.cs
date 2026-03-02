@@ -45,6 +45,8 @@ public class Program
                 
                 // This command forces EF Core to build the database and tables if they dont exist
                 context.Database.EnsureCreated();
+                // Seed data into empty tables for testing purposes
+                EventBOOKR.Models.SeedData.Initialise(context);
             }
             catch (Exception ex)
             {

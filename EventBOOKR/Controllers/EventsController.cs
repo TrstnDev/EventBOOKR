@@ -37,6 +37,7 @@ public class EventsController : Controller
         {
             _context.Add(@event);
             await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = $"Event '{@event.Name}' was successfully created!";
             return RedirectToAction(nameof(Index));
         }
 

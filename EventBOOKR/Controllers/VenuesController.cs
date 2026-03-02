@@ -69,6 +69,7 @@ public class VenuesController : Controller
         {
             _context.Add(venue);
             await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = $"Venue '{venue.Name}' was successfully created!";
             return RedirectToAction(nameof(Index));
         }
 

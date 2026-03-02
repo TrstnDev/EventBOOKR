@@ -56,6 +56,7 @@ public class BookingsController : Controller
         {
             _context.Add(booking);
             await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = $"Booking at '{booking.Venue}' for {booking.StartDate} was successfully created!";
             return RedirectToAction(nameof(Index));
         }
         
