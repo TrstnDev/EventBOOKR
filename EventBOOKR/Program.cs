@@ -41,17 +41,12 @@ public class Program
             var services = scope.ServiceProvider;
             try
             {
-                var context = services.GetRequiredService<ApplicationDbContext>();
-                
-                // This command forces EF Core to build the database and tables if they dont exist
-                context.Database.EnsureCreated();
-                // Seed data into empty tables for testing purposes
-                EventBOOKR.Models.SeedData.Initialise(context);
+                EventBOOKR.Data.SeedData.Initialize(services);
             }
             catch (Exception ex)
             {
                 var logger = services.GetRequiredService<ILogger<Program>>();
-                logger.LogError(ex, "An error occurred while creating the database.");
+                logger.LogError(ex, "An error occurred while seeding the DB.");
             }
         }
         
