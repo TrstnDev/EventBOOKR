@@ -7,10 +7,10 @@ public class Venue
     public int VenueId { get; set; }
     
     [Required]
-    public string Name { get; set; }
+    public required string Name { get; set; }
     
     [Required]
-    public string Location { get; set; }
+    public required string Location { get; set; }
     
     [Required]
     public int Capacity { get; set; }

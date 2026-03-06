@@ -7,7 +7,7 @@ public class Event
     public int EventId { get; set; }
     
     [Required]
-    public string Name { get; set; }
+    public required string Name { get; set; }
     
     public string? Description { get; set; }
 
