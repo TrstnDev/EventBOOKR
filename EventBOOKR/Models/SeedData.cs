@@ -1,56 +1,99 @@
-using EventBOOKR.Data;
+using EventBOOKR.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace EventBOOKR.Models;
-
-public static class SeedData
+namespace EventBOOKR.Data
 {
-    public static void Initialise(ApplicationDbContext context)
+    public static class SeedData
     {
-        // Look for existing venues; if they exist the DB is already seeded
-        if (context.Venues.Any())
+        public static void Initialize(IServiceProvider serviceProvider)
         {
-            return;
+            using var context = new ApplicationDbContext(
+                serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>());
+
+            // If there are any venues, the database has been seeded
+            if (context.Venues.Any())
+            {
+                return;
+            }
+
+            // 1. Create Venues
+            var vaWaterfront = new Venue { Name = "V&A Waterfront", Location = "19 Dock Rd, Cape Town", Capacity = 5000 };
+            var gigiRooftop = new Venue { Name = "Gigi Rooftop", Location = "118 St Georges Mall, Cape Town", Capacity = 150 };
+            var theArgyle = new Venue { Name = "The Argyle", Location = "Woodstock, Cape Town", Capacity = 200 };
+
+            context.Venues.AddRange(vaWaterfront, gigiRooftop, theArgyle);
+            context.SaveChanges(); // Save to generate IDs
+
+            // 2. Create Events
+            var fashionWeek = new Event 
+            { 
+                Name = "V&A Fashion Week", 
+                Description = "A week-long showcase of Africa's top designers.",
+                IsFlexibleSchedule = true // Users must pick a 30-min slot during the active days
+            };
+
+            var highTea = new Event 
+            { 
+                Name = "High Tea", 
+                Description = "An elegant afternoon of artisan teas and pastries.",
+                IsFlexibleSchedule = false // Fixed time, no slot selection needed
+            };
+
+            var quizNight = new Event 
+            { 
+                Name = "Weekly Quiz Night", 
+                Description = "Test your trivia knowledge and win bar tabs!",
+                IsFlexibleSchedule = false 
+            };
+
+            context.Events.AddRange(fashionWeek, highTea, quizNight);
+            context.SaveChanges();
+
+            // 3. Create Event Schedules
+            context.EventSchedules.AddRange(
+                
+                new EventSchedule 
+                { 
+                    EventId = fashionWeek.EventId, 
+                    VenueId = vaWaterfront.VenueId, 
+                    StartTime = new DateTime(2026, 3, 2, 8, 0, 0), // March 2nd, 08:00
+                    EndTime = new DateTime(2026, 3, 9, 20, 0, 0)   // March 9th, 20:00
+                },
+                
+                new EventSchedule 
+                { 
+                    EventId = highTea.EventId, 
+                    VenueId = theArgyle.VenueId, 
+                    StartTime = new DateTime(2026, 3, 7, 11, 0, 0), // Saturday, March 7th @ 11:00
+                    EndTime = new DateTime(2026, 3, 7, 14, 0, 0)
+                },
+                
+                new EventSchedule 
+                { 
+                    EventId = highTea.EventId, 
+                    VenueId = gigiRooftop.VenueId, 
+                    StartTime = new DateTime(2026, 3, 14, 11, 0, 0), // Saturday, March 14th @ 11:00
+                    EndTime = new DateTime(2026, 3, 14, 14, 0, 0)
+                },
+                
+                new EventSchedule 
+                { 
+                    EventId = quizNight.EventId, 
+                    VenueId = theArgyle.VenueId, 
+                    StartTime = new DateTime(2026, 3, 10, 19, 0, 0), // Tuesday, March 10th @ 19:00
+                    EndTime = new DateTime(2026, 3, 10, 22, 0, 0)
+                },
+                
+                new EventSchedule 
+                { 
+                    EventId = quizNight.EventId, 
+                    VenueId = gigiRooftop.VenueId, 
+                    StartTime = new DateTime(2026, 3, 11, 19, 0, 0), // Wednesday, March 11th @ 19:00
+                    EndTime = new DateTime(2026, 3, 11, 22, 0, 0)
+                }
+            );
+
+            context.SaveChanges();
         }
-        
-        // 1. Seed venues
-        var venues = new Venue[]
-        {
-            new Venue { Name = "CTICC Main Hall", Location = "Convention Square, 1 Lower Long Street", Capacity = 10000 },
-            new Venue { Name = "Kirstenbosch Summer Concert Stage", Location = "Rhodes Dr, Newlands", Capacity = 5000 },
-            new Venue { Name = "The Old Biscuit Mill", Location = "373 Albert Rd, Woodstock", Capacity = 800 },
-            new Venue { Name = "Sea Point Civic Centre", Location = "Cnr. Main Rd and Bowlers Ave, Sea Point", Capacity = 300 },
-            new Venue { Name = "Radisson Hotel Waterfont", Location = "100 Beach Rd, Mouille Point", Capacity = 300 },
-            new Venue { Name = "Mount Nelson Hotel", Location = "76 Orange St, Gardens", Capacity = 400 },
-            new Venue { Name = "Zeitz MOCAA Ocular Lounge", Location = "S Arm Rd, Victoria & Alfred Waterfront", Capacity = 200 },
-            new Venue { Name = "Rooftop on Bree", Location = "170 Bree St, Cape Town City Centre", Capacity = 100 },
-            new Venue { Name = "The Lookout", Location = "2 Sachs St, Schotsche Kloof", Capacity = 800 },
-            new Venue { Name = "Grand Africa Cafe & Beach", Location = "1 Haul Rd, Victoria & Alfred Waterfront", Capacity = 1050 },
-            new Venue { Name = "NASDAK", Location = "40 Heerengracht St, Cape Town City Centre", Capacity = 250 },
-            new Venue { Name = "Gigi Rooftop", Location = "118 St Georges Mall, Cape Town City Centre", Capacity = 100 },
-            new Venue { Name = "The Argyle", Location = "1 Argyle St, Woodstock", Capacity = 200 }
-        };
-        context.Venues.AddRange(venues);
-        context.SaveChanges();
-        
-        // 2. Seed Events
-        var events = new Event[]
-        {
-            new Event { Name = "Global Tech Summit 2026", Description = "Annual technology and software development conference." },
-            new Event { Name = "Sunset Botanical Concert", Description = "Live acoustic music in the gardens." },
-            new Event { Name = "Weekend Farmers Market", Description = "Local food, crafts, and live entertainment." },
-            new Event { Name = "Sea Point Artisan Market", Description = "A vibrant community gathering featuring local crafts, food, and family activities." },
-            new Event { Name = "Oceanfront Corporate Gala", Description = "Exclusive black-tie networking evening for maritime and tech executives." },
-            new Event { Name = "Pink Lady Spring High Tea", Description = "A luxurious afternoon of classical music, fine teas, and pastries." },
-            new Event { Name = "Contemporary African Art Auction", Description = "An avant-garde evening celebrating modern art, featuring live auctions and champagne." },
-            new Event { Name = "Mother City Startup Pitch Night", Description = "Cape Town's brightest tech founders pitch their ideas against a city skyline backdrop." },
-            new Event { Name = "V&A Waterfront Fashion Week", Description = "Showcasing the upcoming summer collections from top South African designers." },
-            new Event { Name = "Grand Summer Sundowners", Description = "An exclusive beach club party featuring international deep house DJs." },
-            new Event { Name = "City Bowl Sunset Sessions", Description = "Trendy inner-city networking event with a panoramic view of Table Mountain." },
-            new Event { Name = "Boutique Mixology Masterclass", Description = "An intimate evening learning the art of craft cocktails and curated tapas." },
-            new Event { Name = "Industrial Chic Wedding Expo", Description = "A showcase of premium wedding vendors in a modern-industrial aesthetic." }
-        };
-        context.Events.AddRange(events);
-        context.SaveChanges();
     }
 }

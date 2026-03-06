@@ -17,5 +17,5 @@ public class Venue
 
     public string? ImageUrl { get; set; }
     
-    public ICollection<Booking>? Bookings { get; set; }
+    public ICollection<EventSchedule>? Schedules { get; set; }
 }
