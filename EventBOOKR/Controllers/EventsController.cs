@@ -43,4 +43,18 @@ public class EventsController : Controller
 
         return View(@event);
     }
+    
+    // GET: Events/Details
+    public async Task<IActionResult> Details(int? id)
+    {
+        if (id == null) return NotFound();
+
+        var eventItem = await _context.Events
+            .Include(e => e.Schedules!)
+                .ThenInclude(s => s.Venue)
+            .FirstOrDefaultAsync(m => m.EventId == id);
+
+        if (eventItem == null) return NotFound();
+        return View(eventItem);
+    }
 }

@@ -26,6 +26,20 @@ public class VenuesController : Controller
         return View();
     }
     
+    // GET: Venue/Details
+    public async Task<IActionResult> Details(int? id)
+    {
+        if (id == null) return NotFound();
+
+        var venue = await _context.Venues
+            .Include(v => v.Schedules!)
+                .ThenInclude(s => s.Event)
+            .FirstOrDefaultAsync(m => m.VenueId == id);
+
+        if (venue == null) return NotFound();
+        return View(venue);
+    }
+    
     // GET: Venues/Edit
     public async Task<IActionResult> Edit(int? id)
     {

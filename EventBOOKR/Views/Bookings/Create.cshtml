@@ -121,6 +121,28 @@
                     timeInput.value = schedule.startTime;
                 }
             });
+            
+            // 3. Force 30-min intervals if users types manually
+            timeInput.addEventListener('blur', function () {
+                if (!this.value) return;
+                
+                let selectedDate = new Date(this.value);
+                let minutes = selectedDate.getMinutes();
+                
+                // if the minutes aren't perfectly :00 or :30
+                if (minutes % 30 !== 0) {
+                    // Round to the nearest 30 minutes
+                    let roundedMins = Math.round(minutes / 30) * 30;
+                    selectedDate.setMinutes(roundedMins);
+                    
+                    // Format back to string
+                    // Adjust for local timezone offset so hours don't shift
+                    let tzOffset = selectedDate.getTimezoneOffset() * 60000;
+                    let localISOTime = (new Date(selectedDate - tzOffset)).toISOString().slice(0, 16);
+                    
+                    this.value = localISOTime;
+                }
+            });
         });
     </script>
 }

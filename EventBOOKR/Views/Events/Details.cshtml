@@ -1,0 +1,91 @@
+@model EventBOOKR.Models.Event
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="mb-6 flex justify-between items-center">
+    <a asp-action="Index" class="text-slate-400 hover:text-slate-200 transition-colors flex items-center text-sm font-medium">
+        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        Back to Events
+    </a>
+    <div class="space-x-3">
+        <a asp-action="Edit" asp-route-id="@Model?.EventId" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-sm font-medium transition-all">Edit Event</a>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-1 space-y-6">
+        <div class="bg-slate-800/40 backdrop-blur-sm rounded-xl border border-slate-700/50 overflow-hidden shadow-lg shadow-slate-900/20">
+            <div class="h-48 w-full bg-slate-700 relative overflow-hidden">
+                @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+                {
+                    <img src="@Model.ImageUrl" alt="@Model.Name" class="w-full h-full object-cover" />
+                }
+                else
+                {
+                    <div class="w-full h-full bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 border-b border-slate-700 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    </div>
+                }
+            </div>
+            
+            <div class="p-6">
+                <h1 class="text-2xl font-extrabold text-slate-100 mb-3">@Model.Name</h1>
+                <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                    @Model.Description
+                </p>
+                @if (Model.IsFlexibleSchedule)
+                {
+                    <div class="inline-flex items-center px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold uppercase tracking-wider">
+                        Flexible Timeslot Event
+                    </div>
+                }
+                else
+                {
+                    <div class="inline-flex items-center px-3 py-1 rounded-full bg-slate-700 border border-slate-600 text-slate-300 text-xs font-semibold uppercase tracking-wider">
+                        Strictly Scheduled Event
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="lg:col-span-2">
+        <h2 class="text-xl font-bold text-slate-100 mb-4">Scheduled Dates & Locations</h2>
+        
+        <div class="space-y-4">
+            @if (Model.Schedules != null && Model.Schedules.Any())
+            {
+                foreach (var schedule in Model.Schedules.OrderBy(s => s.StartTime))
+                {
+                    <div class="bg-slate-800/40 rounded-xl border border-slate-700/50 p-5 flex flex-col sm:flex-row justify-between sm:items-center gap-4 hover:border-emerald-500/50 transition-colors">
+                        <div>
+                            <h3 class="font-bold text-lg text-slate-100 flex items-center">
+                                <svg class="w-4 h-4 mr-2 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+                                @schedule.Venue?.Name
+                            </h3>
+                            <p class="text-sm text-slate-400 mt-1 pl-6">
+                                @if (Model.IsFlexibleSchedule)
+                                {
+                                    <span>@schedule.StartTime.ToString("MMMM dd, yyyy") — @schedule.EndTime.ToString("MMMM dd, yyyy")</span>
+                                }
+                                else
+                                {
+                                    <span>@schedule.StartTime.ToString("f")</span>
+                                }
+                            </p>
+                        </div>
+                        <a asp-controller="Bookings" asp-action="Create" class="text-sm font-medium text-emerald-400 hover:text-emerald-300">Reserve Spot &rarr;</a>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="p-8 text-center bg-slate-800/20 border border-slate-700 border-dashed rounded-xl">
+                    <p class="text-slate-500">This event has not been scheduled at any venues yet.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
