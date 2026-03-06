@@ -4,35 +4,71 @@
     ViewData["Title"] = "Create Booking";
 }
 
-<h1>Create Booking</h1>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="max-w-2xl mx-auto">
+    <div class="mb-8">
+        <h1 class="text-3xl font-extrabold tracking-tight text-slate-100">Create Booking</h1>
+        <p class="text-slate-400 mt-1 text-sm">Schedule an event at a specific venue.</p>
+    </div>
+
+    <div class="bg-slate-800/40 backdrop-blur-sm rounded-xl border border-slate-700/50 p-6 md:p-8 shadow-lg shadow-slate-900/20">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <div asp-validation-summary="ModelOnly" class="text-red-400 text-sm mb-6 bg-red-400/10 p-3 rounded-lg border border-red-400/20"></div>
             
-            <div class="form-group mb-3">
-                <label asp-for="VenueId" class="control-label">Venue</label>
-                <select asp-for="VenueId" class="form-control" asp-items="ViewBag.VenueId"></select>
+            <div class="space-y-6">
+                <div>
+                    <label asp-for="VenueId" class="block text-sm font-medium text-slate-300 mb-1">Venue</label>
+                    <div class="relative">
+                        <select asp-for="VenueId" class="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all shadow-inner appearance-none" asp-items="ViewBag.VenueId">
+                            <option value="">-- Select a Venue --</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
+                    </div>
+                    <span asp-validation-for="VenueId" class="text-red-400 text-xs mt-1.5 block font-medium"></span>
+                </div>
+
+                <div>
+                    <label asp-for="EventId" class="block text-sm font-medium text-slate-300 mb-1">Event</label>
+                    <div class="relative">
+                        <select asp-for="EventId" class="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all shadow-inner appearance-none" asp-items="ViewBag.EventId">
+                            <option value="">-- Select an Event --</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
+                    </div>
+                    <span asp-validation-for="EventId" class="text-red-400 text-xs mt-1.5 block font-medium"></span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label asp-for="StartDate" class="block text-sm font-medium text-slate-300 mb-1">Start Date & Time</label>
+                        <input asp-for="StartDate" class="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all shadow-inner [color-scheme:dark]" />
+                        <span asp-validation-for="StartDate" class="text-red-400 text-xs mt-1.5 block font-medium"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="EndDate" class="block text-sm font-medium text-slate-300 mb-1">End Date & Time</label>
+                        <input asp-for="EndDate" class="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all shadow-inner [color-scheme:dark]" />
+                        <span asp-validation-for="EndDate" class="text-red-400 text-xs mt-1.5 block font-medium"></span>
+                    </div>
+                </div>
             </div>
-            <div class="form-group mb-3">
-                <label asp-for="EventId" class="control-label">Event</label>
-                <select asp-for="EventId" class="form-control" asp-items="ViewBag.EventId"></select>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="StartDate" class="control-label">Start Date & Time</label>
-                <input asp-for="StartDate" class="form-control" type="datetime-local" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="EndDate" class="control-label">End Date & Time</label>
-                <input asp-for="EndDate" class="form-control" type="datetime-local" />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-success" />
-                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+
+            <div class="mt-8 pt-6 border-t border-slate-700/50 flex items-center justify-between">
+                <a asp-action="Index" class="text-sm font-medium text-slate-400 hover:text-slate-200 transition-colors flex items-center">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    Back to List
+                </a>
+                <button type="submit" class="px-6 py-2.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-medium transition-colors shadow-sm shadow-purple-500/20">
+                    Book Event
+                </button>
             </div>
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

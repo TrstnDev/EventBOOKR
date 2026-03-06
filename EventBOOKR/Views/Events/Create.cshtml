@@ -4,31 +4,49 @@
     ViewData["Title"] = "Create Event";
 }
 
-<h1>Create Event</h1>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="max-w-2xl mx-auto">
+    <div class="mb-8">
+        <h1 class="text-3xl font-extrabold tracking-tight text-slate-100">Create Event</h1>
+        <p class="text-slate-400 mt-1 text-sm">Add a new event to your schedule.</p>
+    </div>
+
+    <div class="bg-slate-800/40 backdrop-blur-sm rounded-xl border border-slate-700/50 p-6 md:p-8 shadow-lg shadow-slate-900/20">
         <form asp-action="Create">
-            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+            <div asp-validation-summary="ModelOnly" class="text-red-400 text-sm mb-6 bg-red-400/10 p-3 rounded-lg border border-red-400/20"></div>
             
-            <div class="form-group mb-3">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control"/>
-                <span asp-validation-for="Name" class="text-danger"></span>
+            <div class="space-y-6">
+                <div>
+                    <label asp-for="Name" class="block text-sm font-medium text-slate-300 mb-1"></label>
+                    <input asp-for="Name" class="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all placeholder-slate-600 shadow-inner" placeholder="e.g., Summer Music Festival" />
+                    <span asp-validation-for="Name" class="text-red-400 text-xs mt-1.5 block font-medium"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Description" class="block text-sm font-medium text-slate-300 mb-1"></label>
+                    <textarea asp-for="Description" rows="4" class="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all placeholder-slate-600 shadow-inner resize-y" placeholder="Describe the event..."></textarea>
+                    <span asp-validation-for="Description" class="text-red-400 text-xs mt-1.5 block font-medium"></span>
+                </div>
+
+                <div>
+                    <label asp-for="ImageUrl" class="block text-sm font-medium text-slate-300 mb-1">Image URL (Optional)</label>
+                    <input asp-for="ImageUrl" class="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all placeholder-slate-600 shadow-inner" placeholder="https://..." />
+                    <span asp-validation-for="ImageUrl" class="text-red-400 text-xs mt-1.5 block font-medium"></span>
+                </div>
             </div>
-            <div class="form-group mb-3">
-                <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" class="form-control"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="ImageUrl" class="control-label">Image URL (Optional)</label>
-                <input asp-for="ImageUrl" class="form-control" placeholder="Leave blank for default placeholder"/>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-success"/>
-                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+
+            <div class="mt-8 pt-6 border-t border-slate-700/50 flex items-center justify-between">
+                <a asp-action="Index" class="text-sm font-medium text-slate-400 hover:text-slate-200 transition-colors flex items-center">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    Back to List
+                </a>
+                <button type="submit" class="px-6 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium transition-colors shadow-sm shadow-emerald-500/20">
+                    Create Event
+                </button>
             </div>
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

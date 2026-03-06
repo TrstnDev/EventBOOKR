@@ -11,7 +11,7 @@ public class Event
     
     public string? Description { get; set; }
 
-    public string? ImageUrl { get; set; } = "https://via.placeholder.com/300x200?text=Event+Image";
+    public string? ImageUrl { get; set; }
     
     public ICollection<Booking>? Bookings { get; set; }
 }

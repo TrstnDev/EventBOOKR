@@ -4,36 +4,64 @@
     ViewData["Title"] = "Venues";
 }
 
-<h1>Venues</h1>
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+    <div>
+        <h1 class="text-3xl font-extrabold tracking-tight text-slate-100">Venues</h1>
+        <p class="text-slate-400 mt-1 text-sm">Manage and explore your event locations.</p>
+    </div>
+    <a asp-action="Create" class="inline-flex items-center px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-medium transition-colors shadow-sm shadow-blue-500/20">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+        Add New Venue
+    </a>
+</div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New Venue</a>
-</p>
-<table class="table">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Location</th>
-        <th>Capacity</th>
-        <th>Image</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>@item.Name</td>
-            <td>@item.Location</td>
-            <td>@item.Capacity</td>
-            <td>
-                <img src="@item.ImageUrl" alt="Venue Image" style="max-width: 100px;" />
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.VenueId" class="btn btn-sm btn-outline-primary">Edit</a>
-                <a asp-action="Delete" asp-route-id="@item.VenueId" class="btn btn-sm btn-outline-danger">Delete</a>
-            </td>
-        </tr>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    @foreach (var item in Model) {
+        <div class="bg-slate-800/40 backdrop-blur-sm rounded-xl border border-slate-700/50 overflow-hidden flex flex-col hover:border-slate-500/50 transition-all duration-300 group shadow-lg shadow-slate-900/20">
+            
+            <div class="h-48 w-full bg-slate-700 relative overflow-hidden">
+                @if (!string.IsNullOrWhiteSpace(item.ImageUrl))
+                {
+                    <img src="@item.ImageUrl" alt="@item.Name" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                }
+                else
+                {
+                    <div class="w-full h-full bg-gradient-to-br from-slate-800 via-slate-800 to-slate-900 border-b border-slate-700 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
+                        <svg class="w-12 h-12 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    </div>
+                }
+                
+                <div class="absolute top-3 right-3 bg-slate-900/80 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-slate-300 border border-slate-600 shadow-sm">
+                    @item.Capacity pax
+                </div>
+            </div>
+            
+            <div class="p-5 flex-grow flex flex-col">
+                <h2 class="text-xl font-bold text-slate-100 mb-1 line-clamp-1">@item.Name</h2>
+                
+                <p class="text-slate-400 text-sm mb-4 flex items-start">
+                    <svg class="w-4 h-4 mr-1.5 mt-0.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <span class="line-clamp-2">@item.Location</span>
+                </p>
+                
+                <div class="mt-auto pt-4 border-t border-slate-700/50 flex justify-between items-center">
+                    <a asp-action="Details" asp-route-id="@item.VenueId" class="text-sm font-semibold text-blue-400 hover:text-blue-300 transition-colors">
+                        View Details &rarr;
+                    </a>
+                    <div class="flex space-x-4 text-sm font-medium">
+                        <a asp-action="Edit" asp-route-id="@item.VenueId" class="text-slate-400 hover:text-slate-200 transition-colors">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.VenueId" class="text-red-400 hover:text-red-300 transition-colors">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     }
-    </tbody>
-</table>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="text-center py-20 bg-slate-800/30 rounded-2xl border border-slate-700 border-dashed mt-6">
+        <h3 class="text-lg font-medium text-slate-300">No venues found</h3>
+        <p class="text-slate-500 mt-1">Get started by creating your first venue.</p>
+    </div>
+}
